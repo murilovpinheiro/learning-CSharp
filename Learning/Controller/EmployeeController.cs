@@ -17,9 +17,13 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add(EmployeeViewModel employeeView)
+    public IActionResult Add([FromForm]EmployeeViewModel employeeView)
     {
-        var employee = new Employee(employeeView.Name, employeeView.Age, null);
+        var filePath = Path.Combine("Storage", employeeView.Photo.FileName);
+        using Stream fileStream = new FileStream(filePath, FileMode.Create);
+        employeeView.Photo.CopyTo(fileStream);
+        
+        var employee = new Employee(employeeView.Name, employeeView.Age, filePath);
         
         _employeeRepository.Add(employee);
 
@@ -33,4 +37,30 @@ public class EmployeeController : ControllerBase
 
         return Ok(employees);
     }
+
+    [HttpGet]
+    [Route("{id}/")]
+    public IActionResult Find(int id)
+    {
+        var employee = _employeeRepository.Get(id); //pode retornar nulo
+
+        if (employee == null)
+        {
+            return Ok("Employee not found"); // Retorna HTTP 200 OK com uma mensagem personalizada
+        }
+
+        return Ok(employee);
+    }
+    
+    [HttpGet]
+    [Route("{id}/download")]
+    public IActionResult DownloadPhoto(int id)
+    {
+        var employee = _employeeRepository.Get(id);
+
+        var dataBytes = System.IO.File.ReadAllBytes(employee.photo);
+
+        return File(dataBytes, "image/png");
+    }
+
 }

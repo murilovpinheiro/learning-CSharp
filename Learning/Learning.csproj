@@ -31,4 +31,8 @@
       <None Remove="Infra\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Storage\" />
+    </ItemGroup>
+
 </Project>
