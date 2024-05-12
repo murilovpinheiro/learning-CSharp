@@ -1,6 +1,0 @@
-@Learning_HostAddress = http://localhost:5127
-
-GET {{Learning_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

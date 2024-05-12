@@ -12,3 +12,5 @@
 /dataSources/
 /dataSources.local.xml
 /Learning.sln
+/.idea
+/Learning/obj
