@@ -2,6 +2,7 @@
 using Learning.Model;
 using Learning.Repo;
 using Learning.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Learning.Controller;
 
@@ -16,6 +17,7 @@ public class EmployeeController : ControllerBase
         _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
     }
 
+    [Authorize]
     [HttpPost]
     public IActionResult Add([FromForm]EmployeeViewModel employeeView)
     {
@@ -29,7 +31,8 @@ public class EmployeeController : ControllerBase
 
         return Ok();
     }
-
+    
+    [Authorize]
     [HttpGet]
     public IActionResult Get()
     {
@@ -38,6 +41,7 @@ public class EmployeeController : ControllerBase
         return Ok(employees);
     }
 
+    [Authorize]
     [HttpGet]
     [Route("{id}/")]
     public IActionResult Find(int id)
@@ -52,6 +56,7 @@ public class EmployeeController : ControllerBase
         return Ok(employee);
     }
     
+    [Authorize]
     [HttpGet]
     [Route("{id}/download")]
     public IActionResult DownloadPhoto(int id)
